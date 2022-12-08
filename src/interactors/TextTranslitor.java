@@ -4,21 +4,43 @@ import java.util.*;
 
 public class TextTranslitor {
 
-    private static int[] getUppercasePositions(String input) {
+    private static Queue<Integer> uppercasePositions;
+
+    private static void rememberUppercasePositions(String input) {
         char[] charArray = input.toCharArray();
-        List<Integer> uppercasePositions = new ArrayList<>();
+        List<Integer> positions = new ArrayList<>();
         for (int i = 0; i < charArray.length; i++) {
             if (Character.isUpperCase(charArray[i])) {
-                uppercasePositions.add(i);
+                positions.add(i);
             }
         }
-        return uppercasePositions.stream().mapToInt(Integer::intValue).toArray();
+        uppercasePositions = new LinkedList<>(positions);
     }
 
     public static String execute(String initialText) {
-        int[] uppercasePositions = getUppercasePositions(initialText);
-        System.out.println(List.of(uppercasePositions));
-        return "";
+        return translite(initialText);
+    }
+
+    private static String translite(String input) {
+        rememberUppercasePositions(input);
+        StringBuilder sb = new StringBuilder();
+        char[] charArray = input.toLowerCase().toCharArray();
+        for (Integer i = 0; i < charArray.length; i++) {
+            try {
+                char symbol = charArray[i];
+                String translited = relatives.get(String.valueOf(symbol));
+                String result;
+                result = Objects.requireNonNullElse(translited, String.valueOf(symbol));
+                if (i.equals(uppercasePositions.peek())) {
+                    result = result.substring(0, 1).toUpperCase() + result.substring(1);
+                    uppercasePositions.poll();
+                }
+                sb.append(result);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return sb.toString();
     }
 
     private static final Map<String, String> relatives;

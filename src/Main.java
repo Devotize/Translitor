@@ -6,11 +6,12 @@ import interactors.TextTranslitor;
 public class Main {
 
     public static void main(String[] args) {
-        String text = "Hello world!";
+        String text = "I Am Hungry. How are you dong, bro? Nice to see ya!";
         //Translated text: Hallo Welt!
         String translatedText = TextTranslator.execute(text);
         System.out.println("Translated text: " + translatedText);
-        TextTranslitor.execute(translatedText);
+        String traslitedText = TextTranslitor.execute(translatedText);
+        System.out.println("translited text: " + traslitedText);
     }
 
 
